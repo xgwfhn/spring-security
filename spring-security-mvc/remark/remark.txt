@@ -1,0 +1,30 @@
+闲谈CSRF
+http://www.cnblogs.com/hyddd/archive/2009/04/09/1432744.html
+
+如何使用spring security，相信百度过的都知道，总共有四种用法
+从简到深为：1、不用数据库，全部数据写在配置文件，这个也是官方文档里面的demo；
+2、使用数据库，根据spring security默认实现代码设计数据库，也就是说数据库已经固定了，这种方法不灵活，
+而且那个数据库设计得很简陋，实用性差；3、spring security和Acegi不同，它不能修改默认filter了，
+但支持插入filter，所以根据这个，我们可以插入自己的filter来灵活使用；
+4、暴力手段，修改源码，前面说的修改默认filter只是修改配置文件以替换filter而已，这种是直接改了里面的源码，
+但是这种不符合OO设计原则，而且不实际，不可用。
+
+7.部署和配置的要点说明
+
+这是一个Spring Security的数据库认证实例,要注意以下几点:
+（1）请自行加入Spring必须的包,Spring security的包和MySQL的驱动包,当然你也可以换成其他的数据库,但是你要相应的修改spring-common.xml中的dataSource部分
+（2）数据库中的两个表users,authorites必须完全按照脚本所示来定义,也就是说表的名字不能修改.
+（3）users表必须包含username,password,enabled字段,这三个字段是绝对不能少的,也不能修改类型.另外enabled一定要为1才能登录
+（4）authorities表必须包含username字段,这个字段引用users的username作为外键,authority字段就是角色的名字,角色名字必须满足ROLE_XXX的格式(例如:ROLE_ADMIN,ROLE_USER,ROLE_MAMAGER)
+（5）如果一个用户有多个角色,不要将多个角色放在一起用逗号隔开.而是每个角色定义一条记录(例如:abu有ROLE_ADMIN,ROLE_USER两个角色,那么应该定义两条记录: 一条为abu, ROLE_USER,另一条为abu, ROLE_ADMIN.而不是只有一条:abu, ROLE_ADMIN,ROLE_USER)
+（6）你可以给authorities表添加一个id字段作为主键.
+
+
+
+spring security主要实现俩个认证  一个是用户名和密码认证   一个是身份认证   俩个切面
+参考视频  http://www.pps.tv/w_19rsbep1ax.html
+
+* spring url过滤 /和/*的区别
+总之，关于web.xml的url映射的小知识:
+<url-pattern>/</url-pattern>  会匹配到/login这样的路径型url，不会匹配到模式为*.jsp这样的后缀型url
+<url-pattern>/*</url-pattern> 会匹配所有url：路径型的和后缀型的url(包括/login,*.jsp,*.js和*.html等)

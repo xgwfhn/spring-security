@@ -1,0 +1,26 @@
+
+springmvc 源码下载地址   http://repo.springsource.org/libs-release-local/org/springframework/spring/
+* 就近原则 支持多个约束配置，配置不要过滤的图片等静态资源 ,
+       采用持久化策略(将用户的登录信息存放cookie),实现"记住我"功能， 
+      支持基于数据库配置验证
+
+
+*
+spring security 实现权限管理
+http://blog.csdn.net/zmx729618/article/details/51096593
+
+Spring Security笔记：使用数据库进行用户认证(form login using database)
+http://www.cnblogs.com/yjmyzz/p/form-login-using-database-with-spring-security3.html
+
+密码加密
+http://www.cnblogs.com/zhangliang0115/archive/2012/04/02/2429584.html
+
+多用户登录
+http://blog.csdn.net/zjh527/article/details/6158706
+ spring security 使用(将权限信息放入数据库中，并自定义登录认证)
+http://blog.csdn.net/sd4015700/article/details/39339201
+
+*csrf
+http://www.oschina.net/code/snippet_1029551_27153
+
+* spring security 4 默认启动csrf

@@ -1,0 +1,36 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+   <!-- 此处过滤器是为了在访问后台资源之前,spring security就进行拦截 -->
+   <filter>
+   		<filter-name>springSecurityFilterChain</filter-name>
+   		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+   </filter>
+   <filter-mapping>
+	  <filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>	   
+   <!-- session过期时长 -->  
+    <session-config>  
+        <session-timeout>3600</session-timeout>  
+    </session-config>
+    <!-- 配置核心控制器 DispatcherServlet 由它分发到具体的controller处理-->
+	<servlet>
+		<servlet-name>dispatcherServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<!-- 配置 DispatcherServlet 的一个初始化参数: 配置 SpringMVC 配置文件的位置和名称 -->
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<!-- <param-value>classpath:spring-*.xml</param-value> -->
+			<param-value>classpath:spring-mvc.xml classpath:spring-security1.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>dispatcherServlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+</web-app>

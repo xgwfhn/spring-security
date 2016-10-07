@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+xmlns:beans="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security.xsd">
+
+
+	 
+	 <!--  数据库配置之jdbc
+	  <http auto-config="true" use-expressions="true">
+            <intercept-url pattern="/**" access="hasRole('ADMIN')" />
+	         <access-denied-handler error-page="/403" />
+	         <form-login  default-target-url="/user/index"
+	             authentication-failure-url="/login?error" username-parameter="username"
+	             password-parameter="password" />
+	         <logout logout-success-url="/login?logout" />
+         	<csrf/>
+   		</http>
+  
+	   <authentication-manager>
+	         <authentication-provider>
+				<jdbc-user-service data-source-ref="dataSource"
+	                 users-by-username-query="select d_username username,d_password password, d_enabled enabled from t_users where d_username=?"
+	                 authorities-by-username-query="select d_username username, d_role role from t_user_roles where d_username=?" />  
+	         </authentication-provider>
+	    </authentication-manager>
+     -->
+	 <http pattern="/style/**" security="none"/>  
+	 <http pattern="/script/**" security="none"/>  
+	 <http pattern="/pages/login.jsp" security="none"/> 
+   	 <!-- 1  将用户、权限、资源(url)硬编码在xml文件中，已经实现过，并经过验证 --> 
+	 <http auto-config="true" >   
+		   
+         <intercept-url pattern="/user/index" access="hasRole('ROLE_USER')" /> 
+         <form-login login-page="/pages/login.jsp"  default-target-url="/user/index"
+	             authentication-failure-url="/pages/login.jsp?error" username-parameter="username"
+	             password-parameter="password" />
+	      <logout logout-success-url="/login?logout" />
+	      <csrf token-repository-ref="tokenRepository"/>  
+     </http>
+     
+	<authentication-manager>
+		<authentication-provider>
+			<user-service>
+				<user name="jimi" password="123" authorities="ROLE_USER,ROLE_ADMIN" />
+				<user name="xgw" password="123" authorities="ROLE_USER" />
+			</user-service>
+		</authentication-provider>
+	</authentication-manager>
+	<beans:bean id="tokenRepository"
+	class="org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository"/> 
+</beans:beans>
+	

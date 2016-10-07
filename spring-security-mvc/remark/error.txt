@@ -1,0 +1,63 @@
+* 编译失败  -Dmaven.multiModuleProjectDirectory system property is not set. Check $M2_HOME environment variable and mvn script match.
+ “window”--》“Preferences”--》“Java”--》“InstalledJREs”选中所用JRE，点击“Edit”。在default VM arguments 处填写： 
+  -Dmaven.multiModuleProjectDirectory=$M2_HOME  前提是你的M2_HOME已经配置好环境变量
+  
+* org.xml.sax.SAXParseException; lineNumber: 10; columnNumber: 25; cvc-complex-type.2.4.a: 发现了以元素 'authentication-manager' 开头的无效内容。应以 '{"http://www.springframework.org/schema/beans":description, "http://www.springframework.org/schema/beans":import, "http://www.springframework.org/schema/beans":alias, "http://www.springframework.org/schema/beans":bean, WC[##other:"http://www.springframework.org/schema/beans"], "http://www.springframework.org/schema/beans":beans}' 之一开头。
+  
+*org.springframework.expression.spel.SpelEvaluationException: EL1008E:(pos 0): Property or field 'ROLE_USER' cannot be found on object of type 'org.springframework.security.web.access.expression.WebSecurityExpressionRoot' - maybe not public?
+   要如下面配置<http auto-config="true" use-expressions="true">
+          <intercept-url pattern="/**" access="hasRole('ADMIN')" />
+   </http>
+* spring security不能拦截
+	http://blog.sina.com.cn/s/blog_6df0baf40100mmzx.html
+	1.  首先spring security 过滤器在web.xml中的声明位置一定要在action之前，否则不报错，也不拦截action。
+	2.  spring security的filter-mapping 应该是/*
+	3.  一般struts2的filter-mapping 也应该是/*
+	4.  如果想使用welcome-file-list，通过jsp跳转，那么需要在struts.properties中配置：struts.action.extension=action
+	    这个配置不会和spring security相关
+	5. spring security配置中的url需要全部用 ”/”开头
+	例子：
+	<http auto-config="true" lowercase-comparisons="true">
+	<form-login login-page="/login.action"
+	authentication-failure-url="/login.action?error=true"
+	login-processing-url="/j_security_check"
+	default-target-url="/edit/fuck.action"
+	always-use-default-target="true"/>
+	<intercept-url pattern="/login.action*" filters="none"/>
+	<intercept-url pattern="/view/**" filters="none"/>
+	<intercept-url pattern="/" filters="none"/>
+	<intercept-url pattern="/styles/**" filters="none"/>
+	<intercept-url pattern="/jquery/**" filters="none"/>
+	<intercept-url pattern="/images/**" filters="none"/>
+	<intercept-url pattern="/fckskin/**" filters="none"/>
+	<intercept-url pattern="/fckeditor/**" filters="none"/>
+	<intercept-url pattern="/**" access="ROLE_ADMIN"/>
+	<logout logout-success-url="/login.action"/>
+	</http>
+	<filter>
+	<filter-name>springSecurityFilterChain</filter-name>
+	<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+	<filter-name>springSecurityFilterChain</filter-name>
+	<url-pattern>/*</url-pattern>
+	</filter-mapping>  
+	
+*	Could not determine type for: java.util.Collection, at table: users, for columns: [org.hibernate.mapping.Column(authorities)
+	解决方案：注解要么写在字段上，要么写在getXX上，千万千万不能混合使用，否则会报这个错
+	
+* 403 Problem accessing /login. Reason:
+ Could not verify the provided CSRF token because your session was not found.
+ 
+ *HTTP ERROR 403
+ Problem accessing /user/login. Reason:
+ Invalid CSRF Token 'null' was found on the request parameter '_csrf' or header 'X-CSRF-TOKEN'.
+ 
+ *No WebApplicationContext found: not in a DispatcherServlet request and no ContextLoaderListener registered?
+ 
+ * springmvc 不能访问controller
+   在springmvc.xml文件中加入 <mvc:annotation-driven />，
+ <mvc:annotation-driven/>相当于注册了DefaultAnnotationHandlerMapping和AnnotationMethodHandlerAdapter两个bean，
+   配置一些messageconverter。即解决了@Controller注解的使用前提配置。  
+ 
+  	
