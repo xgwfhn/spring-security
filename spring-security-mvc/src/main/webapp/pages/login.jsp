@@ -30,9 +30,9 @@
 
        <form class="form-signin" role="form" action="/user/login" method="post">
         <h2 class="form-signin-heading">Please sign in</h2>
-        <input  class="form-control" placeholder="Email address"  autofocus>
-        <input type="password" class="form-control" placeholder="Password" required>
-         <security:csrfInput/>
+        <input  class="form-control"  type="text" name="username" autofocus>
+        <input type="password" name="password" class="form-control" placeholder="Password" required>
+         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <div class="checkbox">
           <label>
             <input type="checkbox" value="remember-me"> Remember me

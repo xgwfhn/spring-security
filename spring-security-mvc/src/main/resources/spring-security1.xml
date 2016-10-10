@@ -32,13 +32,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	 <http pattern="/script/**" security="none"/>  
 	 <http pattern="/pages/login.jsp" security="none"/> 
    	 <!-- 1  将用户、权限、资源(url)硬编码在xml文件中，已经实现过，并经过验证 --> 
-	 <http auto-config="true" >   
-		   
-         <intercept-url pattern="/user/index" access="hasRole('ROLE_USER')" /> 
-         <form-login login-page="/pages/login.jsp"  default-target-url="/user/index"
+	 <http auto-config="true"  >   
+		 <!-- 角色此处必须以ROLE_打头 --> 
+         
+         <form-login login-page="/pages/login.jsp"  default-target-url="/user/index" 
 	             authentication-failure-url="/pages/login.jsp?error" username-parameter="username"
 	             password-parameter="password" />
 	      <logout logout-success-url="/login?logout" />
+	      <intercept-url pattern="/user/index" access="hasRole('ROLE_USER')"  /> 
 	      <csrf token-repository-ref="tokenRepository"/>  
      </http>
      
